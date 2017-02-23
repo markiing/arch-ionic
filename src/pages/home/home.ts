@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
-import { ComentarioService } from '../../service/ComentarioService'
+import { AssuntoService } from '../../service/AssuntoService'
 import { NavController } from 'ionic-angular';
+import { Assunto }from '../../model/Assunto';
+import { Tipo }from '../../model/Tipo';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
-  providers: [ComentarioService],
+  providers: [AssuntoService],
   template: `
     <form (ngSubmit)="logar(usuario,senha)">
+      <ul>
+        <li *ngFor="let assunto of assuntos">{{assunto.assunto}}</li>
+      </ul>
       <ion-item>
         <ion-label>Usuario</ion-label>
         <ion-input type="text" [(ngModel)]="usuario"  name="usuario"></ion-input>
@@ -22,12 +27,14 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, private _comentarioService: ComentarioService) {
+  assuntos:Assunto[];
+
+  constructor(public navCtrl: NavController, private _assuntoService: AssuntoService) {
   }
   
   logar(usuario: string, senha:string){
-    console.log("cheguei");
-    this._comentarioService.recognize();
+    let assuntos:Assunto[] = this._assuntoService.getAllSubjects();
+    this.assuntos = assuntos;
   }
 
 }

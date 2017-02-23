@@ -7,16 +7,17 @@ import { Services } from './Services'
 @Injectable()
 export class ComentarioService extends Services<Comentario> {
   
-  private comentariosList:Comentario[] = [];
+  private _comentariosList:Comentario[] = [];
   
   constructor(public http: Http){
-    super(Comentario, http);
+    super(http);
   }
 
-  public recognize(): void{
-    let obs = this.oneResultGet("");
-    obs.subscribe(data => data.forEach(comment => console.log(comment)));
-    this.comentariosList.forEach(com => console.log(com.body));
+  public getAllSubjects(): Comentario[]{
+    this._comentariosList = [];
+    let obs = this.manyResultGet("recuperarassuntos?tokenApplication=1234567890");
+    obs.subscribe(data=> data.forEach(d=> console.log(new Comentario(d.title,d.body))));
+    return this._comentariosList;
   }
   
   
